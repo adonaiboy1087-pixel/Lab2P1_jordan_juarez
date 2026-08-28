@@ -12,7 +12,7 @@ public class Lab6P1_jordanjuarez {
 
         do {
             System.out.println("Menu de Laboratorio 6");
-            System.out.println("1. Carrera de Letras");
+            System.out.println("1. Carrera de Arreglos");
             System.out.println("2. Cuantos Primos Tienes?");
             System.out.println("3. Rail Fence");
             System.out.println("4. Salir");
@@ -29,7 +29,7 @@ public class Lab6P1_jordanjuarez {
                     ejercicio2(sc);
                     break;
                 case 3:
-                    System.out.println("Opcion 3 seleccionada.");
+                    ejercicio3(sc);
                     break;
                 case 4:
                     System.out.println("Saliendo del programa...");
@@ -209,5 +209,96 @@ public class Lab6P1_jordanjuarez {
             res[i] = countPrimeFactors(arr[i]);
         }
         return res;
+    }
+
+    // ==========================================
+    // EJERCICIO 3: Rail Fence
+    // ==========================================
+    public static void ejercicio3(Scanner sc) {
+        System.out.println("Ejercicio 3 - Rail Fence");
+        System.out.print("Ingrese la frase que le gustaria cifrar: ");
+        String frase = sc.nextLine();
+
+        while (!validarFrase(frase)) {
+            System.out.print("Ingrese la frase que le gustaria cifrar: ");
+            frase = sc.nextLine();
+        }
+
+        String limpia = PrepararFrase(frase);
+        System.out.println("Frase preparada: " + limpia);
+
+        int n = limpia.length();
+
+        char[] riel1 = new char[n];
+        char[] riel2 = new char[n];
+        char[] riel3 = new char[n];
+
+        int riel = 0;
+        boolean bajando = true;
+
+        for (int i = 0; i < n; i++) {
+            char c = limpia.charAt(i);
+
+            if (riel == 0) {
+                riel1[i] = c;
+            } else if (riel == 1) {
+                riel2[i] = c;
+            } else if (riel == 2) {
+                riel3[i] = c;
+            }
+
+            if (riel == 0) {
+                bajando = true;
+            } else if (riel == 2) {
+                bajando = false;
+            }
+
+            if (bajando) {
+                riel++;
+            } else {
+                riel--;
+            }
+        }
+
+        String cifrado = "";
+
+        for (int i = 0; i < n; i++) {
+            if (riel1[i] != '\0') {
+                cifrado += riel1[i];
+            }
+        }
+        for (int i = 0; i < n; i++) {
+            if (riel2[i] != '\0') {
+                cifrado += riel2[i];
+            }
+        }
+        for (int i = 0; i < n; i++) {
+            if (riel3[i] != '\0') {
+                cifrado += riel3[i];
+            }
+        }
+
+        System.out.println("Texto cifrado: " + cifrado);
+    }
+
+    public static String PrepararFrase(String frase) {
+        String res = "";
+        for (int i = 0; i < frase.length(); i++) {
+            char c = frase.charAt(i);
+            if (c != ' ') {
+                res += c;
+            }
+        }
+        return res.toUpperCase();
+    }
+
+    public static boolean validarFrase(String f) {
+        for (int i = 0; i < f.length(); i++) {
+            char c = f.charAt(i);
+            if (!((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == ' ')) {
+                return false;
+            }
+        }
+        return true;
     }
 }
